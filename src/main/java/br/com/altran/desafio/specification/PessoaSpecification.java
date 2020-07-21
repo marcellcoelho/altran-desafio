@@ -12,17 +12,35 @@ import org.springframework.data.jpa.domain.Specification;
 
 import br.com.altran.desafio.entity.Pessoa;
 
+/**
+ * The Class PessoaSpecification.
+ */
 public class PessoaSpecification implements Specification<Pessoa> {
 
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -938014258312880579L;
 	
+	/** The filter. */
 	private Pessoa filter;
 
+	/**
+	 * Instantiates a new pessoa specification.
+	 *
+	 * @param filter the filter
+	 */
 	public PessoaSpecification(Pessoa filter) {
 		super();
 		this.filter = filter;
 	}
 
+	/**
+	 * To predicate.
+	 *
+	 * @param root the root
+	 * @param criteriaQuery the criteria query
+	 * @param criteriaBuilder the criteria builder
+	 * @return the predicate
+	 */
 	public Predicate toPredicate(Root<Pessoa> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
 		List<Predicate> predicateList = new ArrayList<>();
 		Predicate predicate = criteriaBuilder.conjunction();

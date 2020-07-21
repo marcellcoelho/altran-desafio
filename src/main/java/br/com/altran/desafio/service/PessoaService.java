@@ -15,16 +15,33 @@ import br.com.altran.desafio.entity.Pessoa;
 import br.com.altran.desafio.exception.BusinessException;
 import br.com.altran.desafio.repository.PessoaRepository;
 
+/**
+ * The Class PessoaService.
+ */
 @Service
 public class PessoaService {
 	
+	/** The pessoa repository. */
 	@Autowired
 	private PessoaRepository pessoaRepository;
 		
+	/**
+	 * Find all.
+	 *
+	 * @param specification the specification
+	 * @param pageable the pageable
+	 * @return the list
+	 */
 	public List<Pessoa> findAll(Specification<Pessoa> specification, Pageable pageable) {
 		return pessoaRepository.findAll(specification, pageable).getContent();
 	}
 
+	/**
+	 * Save.
+	 *
+	 * @param pessoa the pessoa
+	 * @return the pessoa
+	 */
 	public Pessoa save(@Valid Pessoa pessoa) {
 		if (pessoa.getId() != null) {
 			throw new BusinessException("A pessoa cadastrada possuí identificador preenchido.");
@@ -36,6 +53,13 @@ public class PessoaService {
 		return pessoaRepository.save(pessoa);
 	}
 
+	/**
+	 * Edits the.
+	 *
+	 * @param id the id
+	 * @param pessoa the pessoa
+	 * @return the pessoa
+	 */
 	public Pessoa edit(Long id, @Valid Pessoa pessoa) {
 		Optional<Pessoa> pessoaBase = pessoaRepository.findById(id);
 		if (pessoaBase.isPresent()) {
@@ -46,6 +70,11 @@ public class PessoaService {
 		}
 	}
 
+	/**
+	 * Delete by id.
+	 *
+	 * @param id the id
+	 */
 	public void deleteById(Long id) {
 		Optional<Pessoa> pessoaBase = pessoaRepository.findById(id);
 		if (pessoaBase.isPresent()) {

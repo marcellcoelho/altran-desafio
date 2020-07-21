@@ -15,9 +15,19 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+/**
+ * The Class ExceptionHandler.
+ */
 @ControllerAdvice
 public class ExceptionHandler extends ResponseEntityExceptionHandler {
 
+	/**
+	 * Handler transaction system exception.
+	 *
+	 * @param ex the ex
+	 * @param request the request
+	 * @return the response entity
+	 */
 	@org.springframework.web.bind.annotation.ExceptionHandler({ TransactionSystemException.class })
 	public ResponseEntity<ExceptionResponseDTO> handlerTransactionSystemException(Exception ex, WebRequest request) {
 		Throwable cause = ((TransactionSystemException) ex).getRootCause();
@@ -32,6 +42,13 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler {
 	            .body(new ExceptionResponseDTO(mensagem));
 	}
 	
+	/**
+	 * Handler property reference exception.
+	 *
+	 * @param ex the ex
+	 * @param request the request
+	 * @return the response entity
+	 */
 	@org.springframework.web.bind.annotation.ExceptionHandler({ PropertyReferenceException.class })
 	public ResponseEntity<ExceptionResponseDTO> handlerPropertyReferenceException(Exception ex, WebRequest request) {
 		Set<String> mensagem = new HashSet<>();
@@ -43,6 +60,13 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler {
 	            .body(new ExceptionResponseDTO(mensagem));
 	}
 
+	/**
+	 * Handler business exception.
+	 *
+	 * @param ex the ex
+	 * @param request the request
+	 * @return the response entity
+	 */
 	@org.springframework.web.bind.annotation.ExceptionHandler({ BusinessException.class })
 	public ResponseEntity<ExceptionResponseDTO> handlerBusinessException(RuntimeException ex, WebRequest request) {
 		Set<String> mensagem = new HashSet<>();

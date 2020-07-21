@@ -22,16 +22,33 @@ import br.com.altran.desafio.entity.Pessoa;
 import br.com.altran.desafio.service.PessoaService;
 import br.com.altran.desafio.specification.PessoaSpecification;
 
+/**
+ * The Class PessoaController.
+ */
 @RestController
 @RequestMapping(path = "/pessoa")
 public class PessoaController {
 
+	/** The pessoa service. */
 	@Autowired
 	private PessoaService pessoaService;
 	
+	/** The model mapper. */
 	@Autowired
 	private ModelMapper modelMapper;
 
+	/**
+	 * Find all.
+	 *
+	 * @param id the id
+	 * @param nome the nome
+	 * @param cpf the cpf
+	 * @param pagina the pagina
+	 * @param tamanho the tamanho
+	 * @param propriedadeParaOrdenar the propriedade para ordenar
+	 * @param direcao the direcao
+	 * @return the list
+	 */
 	@GetMapping
 	public List<PessoaDTO> findAll(
 			@RequestParam(value = "id", required = false) Long id,
@@ -44,25 +61,55 @@ public class PessoaController {
 		return pessoaService.findAll(new PessoaSpecification(new Pessoa(id, nome, cpf)), PageRequest.of(pagina, tamanho, direcao, propriedadeParaOrdenar)).stream().map(this::convertToDto).collect(Collectors.toList());
 	}
 	
+	/**
+	 * Save.
+	 *
+	 * @param pessoaDTO the pessoa DTO
+	 * @return the pessoa DTO
+	 */
 	@PostMapping
 	public PessoaDTO save(@RequestBody PessoaDTO pessoaDTO) {
 		return convertToDto(pessoaService.save(convertToEntity(pessoaDTO)));
 	}
 	
+	/**
+	 * Edits the.
+	 *
+	 * @param id the id
+	 * @param pessoaDTO the pessoa DTO
+	 * @return the pessoa DTO
+	 */
 	@PutMapping("/{id}")
 	public PessoaDTO edit(@PathVariable Long id, @RequestBody PessoaDTO pessoaDTO) {
 		return convertToDto(pessoaService.edit(id, convertToEntity(pessoaDTO)));
 	}
 	
+	/**
+	 * Delete.
+	 *
+	 * @param id the id
+	 */
 	@DeleteMapping("/{id}")
 	public void delete(@PathVariable Long id) {
 		pessoaService.deleteById(id);
 	}
 	
+	/**
+	 * Convert to dto.
+	 *
+	 * @param pessoa the pessoa
+	 * @return the pessoa DTO
+	 */
 	private PessoaDTO convertToDto(Pessoa pessoa) {
 		return modelMapper.map(pessoa, PessoaDTO.class);
 	}
 
+	/**
+	 * Convert to entity.
+	 *
+	 * @param pessoaDTO the pessoa DTO
+	 * @return the pessoa
+	 */
 	private Pessoa convertToEntity(PessoaDTO pessoaDTO) {
 		return modelMapper.map(pessoaDTO, Pessoa.class);
 	}
